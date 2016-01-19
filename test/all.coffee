@@ -2,28 +2,28 @@
 
 describe "using all()", ->
 
+describe "original chai all.keys implementation", ->
+  simpleObj =
+    foo: "foo"
+    bar: "bar" 
+
+  it "should assert keys on an object", ->
+    simpleObj.should.have.all.keys ["foo", "bar"]
+
+  it "fails if the object doesn't have all keys", ->
+    (() -> simpleObj.should.have.all.keys ["foo", "bar", "baz"]).
+      should.throw
+
 describe "an object without length", ->
   nonLengthObject = {}
 
   it "fails to have all elements equal to 1", ->
     (() -> nonLengthObject.should.all.equal 1).
-      should.throw "expected {} to have a property 'length'"
+      should.throw
 
   it "fails not to have all elements equal to 1", ->
     (() -> nonLengthObject.should.all.equal 1).
-      should.throw "expected {} to have a property 'length'"
-
-
-describe "an object without numeric length", ->
-  nonNumLengthObject = { length: 'a' }
-
-  it "fails to have all elements equal to 1", ->
-    (() -> nonNumLengthObject.should.all.equal 1).
-      should.throw "all object length: expected 'a' to be a number"
-
-  it "fails not to have all elements equal to 1", ->
-    (() -> nonNumLengthObject.should.all.equal 1).
-      should.throw "all object length: expected 'a' to be a number"
+      should.throw
 
 
 describe "an empty array's elements", ->
