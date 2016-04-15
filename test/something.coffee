@@ -17,23 +17,23 @@ describe "using something()", ->
 
 
 describe "an object without length", ->
-  nonLengthObject = {}
+  nonLengthObject = 1
 
   it "fails to include something", ->
     (() -> nonLengthObject.should.include.something()).
-      should.throw "expected {} to have a property 'length'"
+      should.throw "since length property unavailable: expected 1 to be an object"
 
   it "fails not to include something", ->
     (() -> nonLengthObject.should.not.include.something()).
-      should.throw "expected {} to have a property 'length'"
+      should.throw "since length property unavailable: expected 1 to be an object"
 
   it "fails to include something that equals 1", ->
     (() -> nonLengthObject.should.include.something.that.equals 1).
-      should.throw "expected {} to have a property 'length'"
+      should.throw "since length property unavailable: expected 1 to be an object"
 
   it "fails not to include something that equals 1", ->
     (() -> nonLengthObject.should.not.include.something.that.equals 1).
-      should.throw "expected {} to have a property 'length'"
+      should.throw "since length property unavailable: expected 1 to be an object"
 
 
 describe "an object without numeric length", ->
@@ -114,6 +114,47 @@ describe "the array [{ a: 1 }, { b: 2 }]", ->
 
   it "should not include something with a property b of 3", ->
     array.should.not.include.something.with.property('b', 3)
+
+describe "the object {primary: { a: 1 }, secondary: { b: 2 }}", ->
+  obj = { primary: { a: 1 }, secondary: { b: 2 }}
+
+  it "should include something", ->
+    obj.should.include.something()
+
+  it "does not *not* include something", ->
+    (() -> obj.should.not.include.something()).
+      should.throw 
+
+  it "should include something that deep equals { b: 2 }", ->
+    obj.should.include.something.that.deep.equals { b: 2 }
+
+  it "should include something that not deep equals { b: 2 }", ->
+    obj.should.include.something.that.not.deep.equals { b: 2 }
+
+  it "does not include something that deep equals { c: 3 }", ->
+    (() -> obj.should.include.something.that.deep.equals { c: 3 }).
+      should.throw "expected an element of { Object (primary, secondary) } to deeply equal { c: 3 }"
+
+  it "should not include something that deep equals { c : 3 }", ->
+    obj.should.not.include.something.that.deep.equals { c: 3 }
+
+  it "should include something that not deep equals { c: 3 }", ->
+    obj.should.include.something.that.not.deep.equals { c: 3 }
+
+  it "does not *not* include something that deep equals { b: 2 }", ->
+    (() -> obj.should.not.include.something.that.deep.equals { b: 2 }).
+      should.throw "expected no element of { Object (primary, secondary) } to deeply equal { b: 2 }"
+
+  it "should include something with a property b of 2", ->
+    obj.should.include.something.with.property('b', 2)
+
+  it "does not include something with a property b of 3", ->
+    (() -> obj.should.include.something.with.property('b', 3)).
+      should.throw "expected an element of { Object (primary, secondary) }" +
+                   " to have a property 'b' of 3, but got 2"
+
+  it "should not include something with a property b of 3", ->
+    obj.should.not.include.something.with.property('b', 3)
 
 
 describe "the array [{ a: 1 }, { a: 1 }]", ->
