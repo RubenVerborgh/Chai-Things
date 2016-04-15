@@ -4,7 +4,8 @@ chai_vers = process.env.npm_package_devDependencies_chai
 chai_major_vers = (chai_vers.split ".").shift()
 
 describe "regression testing keys()", ->
-  (if chai_major_vers != '3' then describe else describe.skip) "1.4 assertion keys", ->
+  console.log chai_major_vers
+  (if chai_major_vers == '1' then describe else describe.skip) "1.4 assertion keys", ->
     describe "out of the box", ->
       obj = { first: 1, second: 2, third: 3}
 
@@ -32,7 +33,7 @@ describe "regression testing keys()", ->
       it "should succeed any keys, if match inclusive", ->
         ob_nested.should.not.include.any.keys("second", "third", "bar")
 
-  (if chai_major_vers == '3' then describe else describe.skip) "3+ assertion keys", ->
+  (if chai_major_vers != '1' then describe else describe.skip) "3+ assertion keys", ->
     obj = { first: 1, second: 2, third: 3}
 
     it "should succeed all keys, if match inclusive", ->

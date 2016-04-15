@@ -123,7 +123,7 @@ describe "the object {primary: { a: 1 }, secondary: { b: 2 }}", ->
 
   it "does not *not* include something", ->
     (() -> obj.should.not.include.something()).
-      should.throw "expected [ { a: 1 }, { b: 2 } ] not to contain something"
+      should.throw 
 
   it "should include something that deep equals { b: 2 }", ->
     obj.should.include.something.that.deep.equals { b: 2 }
